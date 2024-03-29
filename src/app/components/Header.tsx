@@ -1,11 +1,13 @@
 'use client'
 import Image from "next/image"
 import hellParadiseImg from '../assets/hells paradise.jpg'
+import userAvatar from '../assets/user.png'
 import { useEffect, useState } from "react"
 import Link from "next/link"
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isLogged, setIsLogged] = useState(false)
 
   useEffect(() => {
     const handleResize = (e:any) => {
@@ -59,40 +61,54 @@ export default function Header() {
             }
           </div>
 
-          <div className="ml-5">
-            <div className="container mx-auto flex justify-between items-center px-4">
-              <div>
-                <img src="/logo.png" alt="Logo" className="h-8" />
-              </div>
-              <nav>
-                <ul className="flex space-x-4">
-                  <li>
-                    <Link className="hover:text-gray-300" href="/ login">
-                      Login
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="hover:text-gray-300" href="/create-account">
-                      Create Account
-                    </Link>
-                  </li>
-                </ul>
-              </nav>
+          <div className="text-xs flex items-center gap-2 ml-5">
+            <div>
+              <Image width={30} src={userAvatar} alt="User Avatar placeholder" />
             </div>
+
+            <div className="hidden md:block">
+              {
+                isLogged ? (
+                  <>
+                    <p>Olá, <strong>Vinicius</strong></p>
+                    <p>Bem vindo. <strong><Link href='#' className="uppercase hover:underline">Sair</Link></strong></p>
+                  </>
+                ) : (
+                  <>
+                    <p>Faça <strong><Link href='#' className="uppercase hover:underline">Login</Link></strong> ou </p>
+                    <p>crie seu <strong><Link href='#' className="uppercase hover:underline">Cadastro</Link></strong> </p>
+                  </>
+                )
+              }
+            </div>         
           </div>
 
         </div>
 
-        <nav className={`${isMenuOpen ? 'scale-100 h-auto' : 'scale-y-0 origin-top h-0'} transition-all duration-500 overflow-hidden md:hidden`}>
-          <ul className="text-white text-center p-4 space-y-5">
+        <nav className={`${isMenuOpen ? 'scale-100 h-auto' : 'scale-y-0 origin-top h-0'} text-center justify-center transition-all duration-500 overflow-hidden md:hidden`}>
+          {
+            isLogged ? (
+              <p>Olá. <strong>Vinicius</strong></p>
+            ) : (
+              <p>Faça o seu Login</p>
+            )
+          }
+          <ul className="text-white p-4 space-y-5">
             <li><Link href="/" className="bg-gray-700 p-2 rounded-lg font-bold transition-all hover:bg-slate-600">Home</Link></li>
             <li><Link href="/about" className="bg-gray-700 p-2 rounded-lg font-bold transition-all hover:bg-slate-600">About</Link></li>
             <li><Link href="/photos" className="bg-gray-700 p-2 rounded-lg font-bold transition-all hover:bg-slate-600">Photos</Link></li>
           </ul>
+          {
+            isLogged ? (
+              <Link href='#' className="uppercase bg-orange-400 w-min py-1 px-10 rounded-md">Sair</Link>
+            ) : (
+              <div className="flex flex-col items-center mt-4 gap-4">
+                <Link href='#' className="uppercase bg-red-500 w-min py-1 px-10 rounded-md">Login</Link>
+                <Link href='#' className="uppercase bg-green-600 w-min py-1 px-10 rounded-md">Cadastro</Link>
+              </div>
+            )
+          }
         </nav>
-
-        
-
       </header>
     </>
   )
