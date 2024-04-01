@@ -1,11 +1,16 @@
+'use client'
 import gabimaruImg from "@/app/assets/gabimaru.png"
 import sagiriImg from "@/app/assets/sagiri.png"
 
 import Image from "next/image"
 import Link from "next/link"
 
+import { AuthContext } from '@/app/context/AuthContext'
+import { useContext } from "react"
+
 export default function About() {
-  let isLogged = true
+
+  const { isLogged } = useContext(AuthContext)
 
   if (!isLogged) {
     return (

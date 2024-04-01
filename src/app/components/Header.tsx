@@ -2,12 +2,13 @@
 import Image from "next/image"
 import hellParadiseImg from '../assets/hells paradise.jpg'
 import userAvatar from '../assets/user.png'
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import Link from "next/link"
+import { AuthContext } from '../context/AuthContext'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isLogged, setIsLogged] = useState(false)
+  const { user, isLogged, logout } = useContext(AuthContext)
 
   useEffect(() => {
     const handleResize = (e:any) => {
@@ -70,13 +71,13 @@ export default function Header() {
               {
                 isLogged ? (
                   <>
-                    <p>Olá, <strong>Vinicius</strong></p>
-                    <p>Bem vindo. <strong><Link href='#' className="uppercase hover:underline">Sair</Link></strong></p>
+                    <p>Olá, <strong>{user?.email}</strong></p>
+                    <p>Bem vindo. <strong><button onClick={logout} className="uppercase hover:underline">Sair</button></strong></p>
                   </>
                 ) : (
                   <>
-                    <p>Faça <strong><Link href='#' className="uppercase hover:underline">Login</Link></strong> ou </p>
-                    <p>crie seu <strong><Link href='#' className="uppercase hover:underline">Cadastro</Link></strong> </p>
+                    <p>Faça <strong><Link href='/sign-in' className="uppercase hover:underline">Login</Link></strong> ou </p>
+                    <p>crie seu <strong><Link href='sign-up' className="uppercase hover:underline">Cadastro</Link></strong> </p>
                   </>
                 )
               }
@@ -88,7 +89,7 @@ export default function Header() {
         <nav className={`${isMenuOpen ? 'scale-100 h-auto' : 'scale-y-0 origin-top h-0'} text-center justify-center transition-all duration-500 overflow-hidden md:hidden`}>
           {
             isLogged ? (
-              <p>Olá. <strong>Vinicius</strong></p>
+              <p>Olá. <strong>{user?.email}</strong></p>
             ) : (
               <p>Faça o seu Login</p>
             )
@@ -100,11 +101,11 @@ export default function Header() {
           </ul>
           {
             isLogged ? (
-              <Link href='#' className="uppercase bg-orange-400 w-min py-1 px-10 rounded-md">Sair</Link>
+              <button onClick={logout} className="uppercase bg-orange-400 w-min py-1 px-10 rounded-md">Sair</button>
             ) : (
               <div className="flex flex-col items-center mt-4 gap-4">
-                <Link href='#' className="uppercase bg-red-500 w-min py-1 px-10 rounded-md">Login</Link>
-                <Link href='#' className="uppercase bg-green-600 w-min py-1 px-10 rounded-md">Cadastro</Link>
+                <Link href='/sign-in' className="uppercase bg-red-500 w-min py-1 px-10 rounded-md">Login</Link>
+                <Link href='/sign-up' className="uppercase bg-green-600 w-min py-1 px-10 rounded-md">Cadastro</Link>
               </div>
             )
           }
